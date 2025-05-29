@@ -4,9 +4,17 @@ const cors = require("cors");
 // require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
-
+const PORT = 5000;
 app.use(cors());
+// app.use(
+//   cors({
+//     origin: [
+//       "https://shimmering-biscochitos-41971d.netlify.app/",
+//       "https://sports-orca-frontend.vercel.app/",
+//       "http://localhost:5173/"
+//     ],
+//   })
+// );
 
 const API_KEY = "828915a2f64b43109e45076c5fd9db4c";
 
@@ -65,12 +73,14 @@ app.get("/api/live-matches", async (req, res) => {
   }
 });
 
-
 app.get("/api/competitions", async (req, res) => {
   try {
-    const response = await fetch("https://api.football-data.org/v4/competitions", {
-      headers: { "X-Auth-Token": API_KEY }
-    });
+    const response = await fetch(
+      "https://api.football-data.org/v4/competitions",
+      {
+        headers: { "X-Auth-Token": API_KEY },
+      }
+    );
     const data = await response.json();
     res.json(data);
   } catch (err) {
@@ -81,9 +91,12 @@ app.get("/api/competitions", async (req, res) => {
 app.get("/api/teams/:code", async (req, res) => {
   try {
     const { code } = req.params;
-    const response = await fetch(`https://api.football-data.org/v4/competitions/${code}/teams`, {
-      headers: { "X-Auth-Token": API_KEY }
-    });
+    const response = await fetch(
+      `https://api.football-data.org/v4/competitions/${code}/teams`,
+      {
+        headers: { "X-Auth-Token": API_KEY },
+      }
+    );
     const data = await response.json();
     res.json(data);
   } catch {
@@ -94,18 +107,18 @@ app.get("/api/teams/:code", async (req, res) => {
 app.get("/api/standings/:code", async (req, res) => {
   try {
     const { code } = req.params;
-    const response = await fetch(`https://api.football-data.org/v4/competitions/${code}/standings`, {
-      headers: { "X-Auth-Token": API_KEY }
-    });
+    const response = await fetch(
+      `https://api.football-data.org/v4/competitions/${code}/standings`,
+      {
+        headers: { "X-Auth-Token": API_KEY },
+      }
+    );
     const data = await response.json();
     res.json(data);
   } catch {
     res.status(500).json({ error: "Failed to fetch standings" });
   }
 });
-
-
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
